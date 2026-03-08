@@ -10,8 +10,8 @@ namespace DATN_WebDT.Models
         [Required]
         public string TenSanPham { get; set; } = string.Empty;
 
-        public int IdThuongHieu { get; set; }
-        public virtual ThuongHieu? ThuongHieu { get; set; }
+        public int IdNhomDoUong { get; set; }
+        public virtual NhomDoUong? NhomDoUong { get; set; }
 
         public string? MoTa { get; set; }
         public decimal GiaGoc { get; set; }

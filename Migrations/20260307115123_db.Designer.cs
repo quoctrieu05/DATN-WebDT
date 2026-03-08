@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DATN_WebDT.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20260210074914_db")]
+    [Migration("20260307115123_db")]
     partial class db
     {
         /// <inheritdoc />
@@ -40,7 +40,7 @@ namespace DATN_WebDT.Migrations
                     b.Property<int>("IdModelSanPham")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SanPhamChiTietIdModelSanPham")
+                    b.Property<int?>("SanPhamChiTietIdSanPhamChiTiet")
                         .HasColumnType("int");
 
                     b.Property<int?>("SanPhamIdSanPham")
@@ -50,101 +50,36 @@ namespace DATN_WebDT.Migrations
 
                     b.HasIndex("IdModelSanPham");
 
-                    b.HasIndex("SanPhamChiTietIdModelSanPham");
+                    b.HasIndex("SanPhamChiTietIdSanPhamChiTiet");
 
                     b.HasIndex("SanPhamIdSanPham");
 
                     b.ToTable("AnhSanPhams");
                 });
 
-            modelBuilder.Entity("DATN_WebDT.Models.BaoHanh", b =>
+            modelBuilder.Entity("DATN_WebDT.Models.ChiTietCongThuc", b =>
                 {
-                    b.Property<int>("IdBaoHanh")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("IdSanPhamChiTiet")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdBaoHanh"));
-
-                    b.Property<string>("ChiPhiPhatSinh")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IdImei")
+                    b.Property<int>("IdNguyenLieu")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdKhachHang")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MoTaLoi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("NgayNhan")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("NgayTra")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TrangThai")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("XuLyPhatSinh")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdBaoHanh");
-
-                    b.HasIndex("IdImei");
-
-                    b.HasIndex("IdKhachHang");
-
-                    b.ToTable("BaoHanhs");
-                });
-
-            modelBuilder.Entity("DATN_WebDT.Models.CameraSau", b =>
-                {
-                    b.Property<int>("IdCameraSau")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCameraSau"));
-
-                    b.Property<string>("DoPhanGiaiCameraSau")
+                    b.Property<string>("DonVi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MoTaCameraSau")
+                    b.Property<string>("GhiChu")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("QuayVideoCameraSau")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("SoLuongCanDung")
+                        .HasColumnType("decimal(18,3)");
 
-                    b.Property<string>("SoLuongOngKinh")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("IdSanPhamChiTiet", "IdNguyenLieu");
 
-                    b.HasKey("IdCameraSau");
+                    b.HasIndex("IdNguyenLieu");
 
-                    b.ToTable("CameraSaus");
-                });
-
-            modelBuilder.Entity("DATN_WebDT.Models.CameraTruoc", b =>
-                {
-                    b.Property<int>("IdCameraTruoc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCameraTruoc"));
-
-                    b.Property<string>("DoPhanGiaiCameraTruoc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("QuayVideoCameraTruoc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TinhNangCameraTruoc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdCameraTruoc");
-
-                    b.ToTable("CameraTruocs");
+                    b.ToTable("ChiTietCongThucs");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.DiaChi", b =>
@@ -261,7 +196,7 @@ namespace DATN_WebDT.Migrations
                     b.Property<int>("IdModelSanPham")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SanPhamChiTietIdModelSanPham")
+                    b.Property<int?>("SanPhamChiTietIdSanPhamChiTiet")
                         .HasColumnType("int");
 
                     b.Property<int>("SoLuong")
@@ -278,7 +213,7 @@ namespace DATN_WebDT.Migrations
 
                     b.HasIndex("IdModelSanPham");
 
-                    b.HasIndex("SanPhamChiTietIdModelSanPham");
+                    b.HasIndex("SanPhamChiTietIdSanPhamChiTiet");
 
                     b.ToTable("DonHangChiTiets");
                 });
@@ -384,9 +319,6 @@ namespace DATN_WebDT.Migrations
                     b.Property<int>("IdHoaDon")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdImei")
-                        .HasColumnType("int");
-
                     b.Property<int?>("IdModelSanPham")
                         .HasColumnType("int");
 
@@ -400,52 +332,9 @@ namespace DATN_WebDT.Migrations
 
                     b.HasIndex("IdHoaDon");
 
-                    b.HasIndex("IdImei");
-
                     b.HasIndex("IdModelSanPham");
 
                     b.ToTable("HoaDonChiTiets");
-                });
-
-            modelBuilder.Entity("DATN_WebDT.Models.Imei", b =>
-                {
-                    b.Property<int>("IdImei")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdImei"));
-
-                    b.Property<int?>("BaoHanhIdBaoHanh")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdModelSanPham")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MaImei")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("MoTa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SanPhamChiTietIdModelSanPham")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("TrangThai")
-                        .HasColumnType("bit");
-
-                    b.HasKey("IdImei");
-
-                    b.HasIndex("BaoHanhIdBaoHanh");
-
-                    b.HasIndex("IdModelSanPham");
-
-                    b.HasIndex("MaImei")
-                        .IsUnique();
-
-                    b.HasIndex("SanPhamChiTietIdModelSanPham");
-
-                    b.ToTable("Imeis");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.KhachHang", b =>
@@ -541,35 +430,38 @@ namespace DATN_WebDT.Migrations
                     b.ToTable("KhuyenMais");
                 });
 
-            modelBuilder.Entity("DATN_WebDT.Models.ManHinh", b =>
+            modelBuilder.Entity("DATN_WebDT.Models.NguyenLieu", b =>
                 {
-                    b.Property<int>("IdManHinh")
+                    b.Property<int?>("IdNguyenLieu")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdManHinh"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdNguyenLieu"));
 
-                    b.Property<string>("CongNgheManHinh")
-                        .IsRequired()
+                    b.Property<string>("DonVi")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DoPhanGiai")
-                        .IsRequired()
+                    b.Property<decimal?>("GiaNhap")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("NgayHetHan")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayNhap")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NhaCungCap")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("KichThuocManHinh")
-                        .IsRequired()
+                    b.Property<int?>("SoLuongTon")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenNguyenLieu")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MoTaManHinh")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("IdNguyenLieu");
 
-                    b.Property<string>("TinhNangManHinh")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdManHinh");
-
-                    b.ToTable("ManHinhs");
+                    b.ToTable("NguyenLieus");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.NhanVien", b =>
@@ -601,71 +493,28 @@ namespace DATN_WebDT.Migrations
                     b.ToTable("NhanViens");
                 });
 
-            modelBuilder.Entity("DATN_WebDT.Models.Pin", b =>
+            modelBuilder.Entity("DATN_WebDT.Models.NhomDoUong", b =>
                 {
-                    b.Property<int>("IdPin")
+                    b.Property<int>("IdNhom")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPin"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNhom"));
 
-                    b.Property<string>("CongNgheSac")
+                    b.Property<string>("MoTa")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DungLuongPin")
+                    b.Property<string>("TenNhom")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TrangThaiNhom")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LoaiPin")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("IdNhom");
 
-                    b.Property<string>("MoTaPin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdPin");
-
-                    b.ToTable("Pins");
-                });
-
-            modelBuilder.Entity("DATN_WebDT.Models.RAM", b =>
-                {
-                    b.Property<int>("IdRAM")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRAM"));
-
-                    b.Property<string>("DungLuongRAM")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MoTaRAM")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdRAM");
-
-                    b.ToTable("RAMs");
-                });
-
-            modelBuilder.Entity("DATN_WebDT.Models.ROM", b =>
-                {
-                    b.Property<int>("IdROM")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdROM"));
-
-                    b.Property<string>("DungLuongROM")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MoTaROM")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdROM");
-
-                    b.ToTable("ROMs");
+                    b.ToTable("NhomDoUongs");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.SanPham", b =>
@@ -685,7 +534,7 @@ namespace DATN_WebDT.Migrations
                     b.Property<decimal?>("GiaYeuThich")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("IdThuongHieu")
+                    b.Property<int>("IdNhomDoUong")
                         .HasColumnType("int");
 
                     b.Property<string>("MoTa")
@@ -700,44 +549,35 @@ namespace DATN_WebDT.Migrations
 
                     b.HasKey("IdSanPham");
 
-                    b.HasIndex("IdThuongHieu");
+                    b.HasIndex("IdNhomDoUong");
 
                     b.ToTable("SanPhams");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.SanPhamChiTiet", b =>
                 {
-                    b.Property<int>("IdModelSanPham")
+                    b.Property<int>("IdSanPhamChiTiet")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdModelSanPham"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSanPhamChiTiet"));
+
+                    b.Property<string>("DoNgot")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Doda")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GiaModel")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IdCameraSau")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdCameraTruoc")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdManHinh")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdPin")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdRAM")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdROM")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdSanPham")
                         .HasColumnType("int");
 
-                    b.Property<string>("MauSac")
+                    b.Property<string>("SizeCoc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenBienThe")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenModel")
@@ -747,23 +587,35 @@ namespace DATN_WebDT.Migrations
                     b.Property<string>("TrangThai")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdModelSanPham");
-
-                    b.HasIndex("IdCameraSau");
-
-                    b.HasIndex("IdCameraTruoc");
-
-                    b.HasIndex("IdManHinh");
-
-                    b.HasIndex("IdPin");
-
-                    b.HasIndex("IdRAM");
-
-                    b.HasIndex("IdROM");
+                    b.HasKey("IdSanPhamChiTiet");
 
                     b.HasIndex("IdSanPham");
 
                     b.ToTable("SanPhamCTs");
+                });
+
+            modelBuilder.Entity("DATN_WebDT.Models.SanPhamChiTiet_Topping", b =>
+                {
+                    b.Property<int>("IdSanPhamChiTiet")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdTopping")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GhiChu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("GiaThem")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("SoLuong")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdSanPhamChiTiet", "IdTopping");
+
+                    b.HasIndex("IdTopping");
+
+                    b.ToTable("SanPhamChiTiet_Toppings");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.TaiKhoan", b =>
@@ -841,30 +693,6 @@ namespace DATN_WebDT.Migrations
                     b.ToTable("ThanhToans");
                 });
 
-            modelBuilder.Entity("DATN_WebDT.Models.ThuongHieu", b =>
-                {
-                    b.Property<int>("IdThuongHieu")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdThuongHieu"));
-
-                    b.Property<string>("MoTa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TenThuongHieu")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("TrangThaiThuongHieu")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdThuongHieu");
-
-                    b.ToTable("ThuongHieus");
-                });
-
             modelBuilder.Entity("DATN_WebDT.Models.TonKho", b =>
                 {
                     b.Property<int?>("IdTonKho")
@@ -876,7 +704,7 @@ namespace DATN_WebDT.Migrations
                     b.Property<int?>("IdKho")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdModelSanPham")
+                    b.Property<int?>("IdNguyenLieu")
                         .HasColumnType("int");
 
                     b.Property<int?>("SoLuong")
@@ -886,9 +714,32 @@ namespace DATN_WebDT.Migrations
 
                     b.HasIndex("IdKho");
 
-                    b.HasIndex("IdModelSanPham");
+                    b.HasIndex("IdNguyenLieu");
 
                     b.ToTable("TonKhos");
+                });
+
+            modelBuilder.Entity("DATN_WebDT.Models.Topping", b =>
+                {
+                    b.Property<int?>("IdTopping")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdTopping"));
+
+                    b.Property<decimal?>("GiaTopping")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TenTopping")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrangThai")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdTopping");
+
+                    b.ToTable("Toppings");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.AnhSanPham", b =>
@@ -901,7 +752,7 @@ namespace DATN_WebDT.Migrations
 
                     b.HasOne("DATN_WebDT.Models.SanPhamChiTiet", null)
                         .WithMany("AnhSanPhams")
-                        .HasForeignKey("SanPhamChiTietIdModelSanPham");
+                        .HasForeignKey("SanPhamChiTietIdSanPhamChiTiet");
 
                     b.HasOne("DATN_WebDT.Models.SanPham", null)
                         .WithMany("AnhSanPhams")
@@ -910,23 +761,23 @@ namespace DATN_WebDT.Migrations
                     b.Navigation("SanPhamCT");
                 });
 
-            modelBuilder.Entity("DATN_WebDT.Models.BaoHanh", b =>
+            modelBuilder.Entity("DATN_WebDT.Models.ChiTietCongThuc", b =>
                 {
-                    b.HasOne("DATN_WebDT.Models.Imei", "Imei")
-                        .WithMany()
-                        .HasForeignKey("IdImei")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("DATN_WebDT.Models.NguyenLieu", "NguyenLieu")
+                        .WithMany("CTCTs")
+                        .HasForeignKey("IdNguyenLieu")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DATN_WebDT.Models.KhachHang", "KhachHang")
-                        .WithMany()
-                        .HasForeignKey("IdKhachHang")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("DATN_WebDT.Models.SanPhamChiTiet", "SanPhamChiTiet")
+                        .WithMany("CTCTs")
+                        .HasForeignKey("IdSanPhamChiTiet")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Imei");
+                    b.Navigation("NguyenLieu");
 
-                    b.Navigation("KhachHang");
+                    b.Navigation("SanPhamChiTiet");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.DiaChi", b =>
@@ -983,7 +834,7 @@ namespace DATN_WebDT.Migrations
 
                     b.HasOne("DATN_WebDT.Models.SanPhamChiTiet", null)
                         .WithMany("DonHangChiTiets")
-                        .HasForeignKey("SanPhamChiTietIdModelSanPham");
+                        .HasForeignKey("SanPhamChiTietIdSanPhamChiTiet");
 
                     b.Navigation("DonHang");
 
@@ -1054,11 +905,6 @@ namespace DATN_WebDT.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DATN_WebDT.Models.Imei", "Imei")
-                        .WithMany()
-                        .HasForeignKey("IdImei")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("DATN_WebDT.Models.SanPhamChiTiet", "SanPhamCT")
                         .WithMany()
                         .HasForeignKey("IdModelSanPham")
@@ -1066,94 +912,48 @@ namespace DATN_WebDT.Migrations
 
                     b.Navigation("HoaDon");
 
-                    b.Navigation("Imei");
-
-                    b.Navigation("SanPhamCT");
-                });
-
-            modelBuilder.Entity("DATN_WebDT.Models.Imei", b =>
-                {
-                    b.HasOne("DATN_WebDT.Models.BaoHanh", "BaoHanh")
-                        .WithMany()
-                        .HasForeignKey("BaoHanhIdBaoHanh");
-
-                    b.HasOne("DATN_WebDT.Models.SanPhamChiTiet", "SanPhamCT")
-                        .WithMany()
-                        .HasForeignKey("IdModelSanPham")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DATN_WebDT.Models.SanPhamChiTiet", null)
-                        .WithMany("Imeis")
-                        .HasForeignKey("SanPhamChiTietIdModelSanPham");
-
-                    b.Navigation("BaoHanh");
-
                     b.Navigation("SanPhamCT");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.SanPham", b =>
                 {
-                    b.HasOne("DATN_WebDT.Models.ThuongHieu", "ThuongHieu")
-                        .WithMany()
-                        .HasForeignKey("IdThuongHieu")
+                    b.HasOne("DATN_WebDT.Models.NhomDoUong", "NhomDoUong")
+                        .WithMany("SanPhams")
+                        .HasForeignKey("IdNhomDoUong")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ThuongHieu");
+                    b.Navigation("NhomDoUong");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.SanPhamChiTiet", b =>
                 {
-                    b.HasOne("DATN_WebDT.Models.CameraSau", "CameraSau")
-                        .WithMany()
-                        .HasForeignKey("IdCameraSau")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DATN_WebDT.Models.CameraTruoc", "CameraTruoc")
-                        .WithMany()
-                        .HasForeignKey("IdCameraTruoc")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DATN_WebDT.Models.ManHinh", "ManHinh")
-                        .WithMany()
-                        .HasForeignKey("IdManHinh")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DATN_WebDT.Models.Pin", "Pin")
-                        .WithMany()
-                        .HasForeignKey("IdPin")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DATN_WebDT.Models.RAM", "RAM")
-                        .WithMany()
-                        .HasForeignKey("IdRAM")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DATN_WebDT.Models.ROM", "ROM")
-                        .WithMany()
-                        .HasForeignKey("IdROM")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("DATN_WebDT.Models.SanPham", "SanPham")
                         .WithMany("ModelSanPhams")
                         .HasForeignKey("IdSanPham")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("CameraSau");
-
-                    b.Navigation("CameraTruoc");
-
-                    b.Navigation("ManHinh");
-
-                    b.Navigation("Pin");
-
-                    b.Navigation("RAM");
-
-                    b.Navigation("ROM");
-
                     b.Navigation("SanPham");
+                });
+
+            modelBuilder.Entity("DATN_WebDT.Models.SanPhamChiTiet_Topping", b =>
+                {
+                    b.HasOne("DATN_WebDT.Models.SanPhamChiTiet", "SanPhamChiTiet")
+                        .WithMany("SanPhamChiTiet_Toppings")
+                        .HasForeignKey("IdSanPhamChiTiet")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DATN_WebDT.Models.Topping", "Topping")
+                        .WithMany("SanPhamChiTiet_Toppings")
+                        .HasForeignKey("IdTopping")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SanPhamChiTiet");
+
+                    b.Navigation("Topping");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.TaiKhoan", b =>
@@ -1191,14 +991,14 @@ namespace DATN_WebDT.Migrations
                         .HasForeignKey("IdKho")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("DATN_WebDT.Models.SanPhamChiTiet", "SanPhamCT")
-                        .WithMany()
-                        .HasForeignKey("IdModelSanPham")
+                    b.HasOne("DATN_WebDT.Models.NguyenLieu", "NguyenLieu")
+                        .WithMany("TonKhos")
+                        .HasForeignKey("IdNguyenLieu")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Kho");
 
-                    b.Navigation("SanPhamCT");
+                    b.Navigation("NguyenLieu");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.DonHang", b =>
@@ -1230,11 +1030,23 @@ namespace DATN_WebDT.Migrations
                     b.Navigation("TonKhos");
                 });
 
+            modelBuilder.Entity("DATN_WebDT.Models.NguyenLieu", b =>
+                {
+                    b.Navigation("CTCTs");
+
+                    b.Navigation("TonKhos");
+                });
+
             modelBuilder.Entity("DATN_WebDT.Models.NhanVien", b =>
                 {
                     b.Navigation("DonHangs");
 
                     b.Navigation("TaiKhoan");
+                });
+
+            modelBuilder.Entity("DATN_WebDT.Models.NhomDoUong", b =>
+                {
+                    b.Navigation("SanPhams");
                 });
 
             modelBuilder.Entity("DATN_WebDT.Models.SanPham", b =>
@@ -1248,11 +1060,18 @@ namespace DATN_WebDT.Migrations
                 {
                     b.Navigation("AnhSanPhams");
 
+                    b.Navigation("CTCTs");
+
                     b.Navigation("DonHangChiTiets");
 
                     b.Navigation("GioHangChiTiets");
 
-                    b.Navigation("Imeis");
+                    b.Navigation("SanPhamChiTiet_Toppings");
+                });
+
+            modelBuilder.Entity("DATN_WebDT.Models.Topping", b =>
+                {
+                    b.Navigation("SanPhamChiTiet_Toppings");
                 });
 #pragma warning restore 612, 618
         }

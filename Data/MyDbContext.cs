@@ -10,13 +10,13 @@ namespace DATN_WebDT.Data
 
         }
         public DbSet<Kho> Khos { get; set; }
-        public DbSet<ThuongHieu> ThuongHieus { get; set; }
-        public DbSet<RAM> RAMs { get; set; }
-        public DbSet<ROM> ROMs { get; set; }
-        public DbSet<Pin> Pins { get; set; }
-        public DbSet<CameraSau> CameraSaus { get; set; }
-        public DbSet<CameraTruoc> CameraTruocs { get; set; }
-        public DbSet<ManHinh> ManHinhs { get; set; }
+        public DbSet<NhomDoUong> NhomDoUongs { get; set; }
+        public DbSet<Topping> Toppings { get; set; }
+        public DbSet<NguyenLieu> NguyenLieus { get; set; }
+        public DbSet<SanPhamChiTiet_Topping> SanPhamChiTiet_Toppings { get; set; }
+        public DbSet<ChiTietCongThuc> ChiTietCongThucs { get; set; }
+        
+
         public DbSet<KhachHang> KhachHangs { get; set; }
         public DbSet<KhuyenMai> KhuyenMais { get; set; }
         public DbSet<NhanVien> NhanViens { get; set; }
@@ -24,8 +24,6 @@ namespace DATN_WebDT.Data
         public DbSet<SanPhamChiTiet> SanPhamCTs { get; set; }
         public DbSet<AnhSanPham> AnhSanPhams { get; set; }
         public DbSet<TonKho> TonKhos { get; set; }
-        public DbSet<Imei> Imeis { get; set; }
-        public DbSet<BaoHanh> BaoHanhs { get; set; }
         public DbSet<HoaDon> HoaDons { get; set; }
         public DbSet<HoaDonChiTiet> HoaDonChiTiets { get; set; }
         public DbSet<GioHang> GioHangs { get; set; }
@@ -40,9 +38,9 @@ namespace DATN_WebDT.Data
         {
             // TaiKhoan 1-1 hoặc 1-n với KH/NV
             modelBuilder.Entity<TaiKhoan>()
-            .HasOne(t => t.KhachHang)
-            .WithOne(k => k.TaiKhoan)
-             .HasForeignKey<TaiKhoan>(t => t.IdKhachHang)
+              .HasOne(t => t.KhachHang)
+              .WithOne(k => k.TaiKhoan)
+              .HasForeignKey<TaiKhoan>(t => t.IdKhachHang)
               .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<TaiKhoan>()
@@ -50,12 +48,12 @@ namespace DATN_WebDT.Data
                 .WithOne(n => n.TaiKhoan)
                 .HasForeignKey<TaiKhoan>(t => t.IdNhanVien)
                 .OnDelete(DeleteBehavior.Restrict);
-            //ThgHieu->SanPham
-            modelBuilder.Entity<SanPham>()
-                .HasOne(s => s.ThuongHieu)
-                .WithMany()
-                .HasForeignKey(s => s.IdThuongHieu)
-                .OnDelete(DeleteBehavior.Restrict);
+         //NhomDoUong 1 - n SanPham
+         modelBuilder.Entity<SanPham>()
+        .HasOne(s => s.NhomDoUong)
+        .WithMany(n => n.SanPhams)  // Thêm collection này vào NhomDoUong
+        .HasForeignKey(s => s.IdNhomDoUong)
+        .OnDelete(DeleteBehavior.Restrict);
 
             //SanPham -> SanPhamCT (1-n)
             modelBuilder.Entity<SanPhamChiTiet>()
@@ -63,49 +61,25 @@ namespace DATN_WebDT.Data
             .WithMany(s => s.ModelSanPhams)
            .HasForeignKey(m => m.IdSanPham)
            .OnDelete(DeleteBehavior.Restrict);
-            // SanPhamCT ↔ các cấu hình chi tiết (1-1, vì mỗi model chỉ có 1 màn hình, 1 camera trước, v.v.)
-            modelBuilder.Entity<SanPhamChiTiet>()
-                .HasOne(m => m.ManHinh)
-                .WithMany()
-                .HasForeignKey(m => m.IdManHinh)
-                .OnDelete(DeleteBehavior.Restrict);
+            //SanPhamCT-TOPPing(N-N)
+            modelBuilder.Entity<SanPhamChiTiet_Topping>()
+                .HasKey(st => new { st.IdSanPhamChiTiet, st.IdTopping });
 
-            modelBuilder.Entity<SanPhamChiTiet>()
-                .HasOne(m => m.CameraTruoc)
-                .WithMany()
-                .HasForeignKey(m => m.IdCameraTruoc)
-                .OnDelete(DeleteBehavior.Restrict);
+             modelBuilder.Entity<SanPhamChiTiet_Topping>()
+                .HasOne(st => st.SanPhamChiTiet)
+                .WithMany(s => s.SanPhamChiTiet_Toppings)
+                .HasForeignKey(st => st.IdSanPhamChiTiet);
 
-            modelBuilder.Entity<SanPhamChiTiet>()
-                .HasOne(m => m.CameraSau)
-                .WithMany()
-                .HasForeignKey(m => m.IdCameraSau)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<SanPhamChiTiet>()
-                .HasOne(m => m.Pin)
-                .WithMany()
-                .HasForeignKey(m => m.IdPin)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<SanPhamChiTiet>()
-                .HasOne(m => m.RAM)
-                .WithMany()
-                .HasForeignKey(m => m.IdRAM)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<SanPhamChiTiet>()
-                .HasOne(m => m.ROM)
-                .WithMany()
-                .HasForeignKey(m => m.IdROM)
-                .OnDelete(DeleteBehavior.Restrict);
-
+            modelBuilder.Entity<SanPhamChiTiet_Topping>()
+                .HasOne(st => st.Topping)
+                .WithMany(t => t.SanPhamChiTiet_Toppings)
+                .HasForeignKey(st => st.IdTopping);
             // Ảnh sản phẩm ↔ ModelSanPham (1-n)
             modelBuilder.Entity<AnhSanPham>()
-                .HasOne(a => a.SanPhamCT)
-                .WithMany()
-                .HasForeignKey(a => a.IdModelSanPham)
-                .OnDelete(DeleteBehavior.Cascade);
+               .HasOne(a => a.SanPhamCT)
+               .WithMany()
+               .HasForeignKey(a => a.IdModelSanPham)  // Đồng bộ tên nếu đổi key
+               .OnDelete(DeleteBehavior.Cascade);
 
             // Giỏ hàng ↔ Khách hàng (1-1 hoặc 1-n )
             modelBuilder.Entity<GioHang>()
@@ -150,7 +124,7 @@ namespace DATN_WebDT.Data
                 .HasForeignKey(dt => dt.IdModelSanPham)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //  Chi tiết hóa đơn ↔ Hóa đơn & ModelSanPham,Imei
+            //  Chi tiết hóa đơn ↔ Hóa đơn & ModelSanPham
             modelBuilder.Entity<HoaDonChiTiet>()
                 .HasOne(hc => hc.HoaDon)
                 .WithMany(h => h.HoaDonChiTiets)
@@ -163,11 +137,7 @@ namespace DATN_WebDT.Data
                 .HasForeignKey(hc => hc.IdModelSanPham)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<HoaDonChiTiet>()
-               .HasOne(h => h.Imei)
-               .WithMany()
-               .HasForeignKey(h => h.IdImei)
-               .OnDelete(DeleteBehavior.Restrict);
+  
 
             //  Thanh toán ↔ Hoa Don (1-n, một đơn có thể có nhiều giao dịch thanh toán)
             modelBuilder.Entity<ThanhToan>()
@@ -176,35 +146,13 @@ namespace DATN_WebDT.Data
                 .HasForeignKey(t => t.IdHoaDon)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //  Bảo hành ↔ IMEI & Khách hàng
-            modelBuilder.Entity<BaoHanh>()
-                .HasOne(b => b.Imei)
-                .WithMany()
-                .HasForeignKey(b => b.IdImei)
-                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<BaoHanh>()
-                .HasOne(b => b.KhachHang)
-                .WithMany()
-                .HasForeignKey(b => b.IdKhachHang)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            //  IMEI ↔ SanPhamCT (1-n)
-            modelBuilder.Entity<Imei>()
-                .HasOne(i => i.SanPhamCT)
-                .WithMany()
-                .HasForeignKey(i => i.IdModelSanPham)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Imei>()
-                .HasIndex(i => i.MaImei)
-                .IsUnique(); // IMEI không được trùng
 
             // Tồn kho ↔ ModelSanPham & Kho (n-1 cho model, n-1 cho kho)
             modelBuilder.Entity<TonKho>()
-                .HasOne(tk => tk.SanPhamCT)
-                .WithMany()
-                .HasForeignKey(tk => tk.IdModelSanPham)
+                .HasOne(tk => tk.NguyenLieu)
+                .WithMany(n => n.TonKhos)
+                .HasForeignKey(tk => tk.IdNguyenLieu)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<TonKho>()
@@ -212,6 +160,21 @@ namespace DATN_WebDT.Data
                 .WithMany(k => k.TonKhos)
                 .HasForeignKey(tk => tk.IdKho)
                 .OnDelete(DeleteBehavior.Restrict);
+            //Chitietcongthuc(N-N)
+            modelBuilder.Entity<ChiTietCongThuc>()
+        .HasKey(cc => new { cc.IdSanPhamChiTiet, cc.IdNguyenLieu });
+
+            modelBuilder.Entity<ChiTietCongThuc>()
+                .HasOne(cc => cc.SanPhamChiTiet)
+                .WithMany(s => s.CTCTs) 
+                .HasForeignKey(cc => cc.IdSanPhamChiTiet)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ChiTietCongThuc>()
+                .HasOne(cc => cc.NguyenLieu)
+                .WithMany(n => n.CTCTs) 
+                .HasForeignKey(cc => cc.IdNguyenLieu)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //  Địa chỉ ↔ Khách hàng (1-n)
             modelBuilder.Entity<KhachHang>()

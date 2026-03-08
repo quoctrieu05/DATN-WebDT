@@ -10,8 +10,8 @@ namespace DATN_WebDT.Models
         public int? IdKho { get; set; }
         public virtual Kho? Kho { get; set; }
 
-        public int? IdModelSanPham { get; set; }
-        public virtual SanPhamChiTiet? SanPhamCT { get; set; }
+        public int? IdNguyenLieu { get; set; }
+        public virtual NguyenLieu? NguyenLieu { get; set; }
 
         public int? SoLuong { get; set; }
     }
