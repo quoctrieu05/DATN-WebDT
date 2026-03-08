@@ -17,6 +17,6 @@ namespace DATN_WebDT.Models
         public string? DefaultImageKhachHang { get; set; }
         public virtual ICollection<DonHang> DonHangs { get; set; } = new List<DonHang>();
         public virtual TaiKhoan? TaiKhoan { get; set; } // Liên kết 1-1 hoặc 1-n
-        public virtual ICollection<DiaChi> Diachi { get; set; }
+        public virtual ICollection<DiaChi> Diachi { get; set; } = new List<DiaChi>();
     }
 }

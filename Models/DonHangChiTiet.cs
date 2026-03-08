@@ -13,7 +13,7 @@ namespace DATN_WebDT.Models
         public int IdModelSanPham { get; set; }
         public virtual SanPhamChiTiet? SanPhamCT { get; set; }
         public int IdKhuyenMai { get; set; }
-        public virtual KhuyenMai KhuyenMai { get; set; }
+        public virtual KhuyenMai? KhuyenMai { get; set; }
 
         public int SoLuong { get; set; }
         public decimal DonGia { get; set; }    

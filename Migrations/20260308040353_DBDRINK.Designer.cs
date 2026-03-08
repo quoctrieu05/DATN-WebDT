@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DATN_WebDT.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20260307115123_db")]
-    partial class db
+    [Migration("20260308040353_DBDRINK")]
+    partial class DBDRINK
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

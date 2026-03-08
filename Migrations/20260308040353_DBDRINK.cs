@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DATN_WebDT.Migrations
 {
     /// <inheritdoc />
-    public partial class db : Migration
+    public partial class DBDRINK : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
